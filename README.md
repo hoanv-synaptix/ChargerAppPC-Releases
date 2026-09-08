@@ -1,4 +1,4 @@
-﻿# PKG Battery – ChargerAppPC Documentation & User Manual
+# PKG Battery – ChargerAppPC Documentation & User Manual
 
 [![Latest Release](https://img.shields.io/github/v/release/hoanv-synaptix/ChargerAppPC-Releases?color=blue&label=Latest%20Release)](https://github.com/hoanv-synaptix/ChargerAppPC-Releases/releases/latest)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20x64-blue.svg)](https://microsoft.com/windows)
@@ -38,19 +38,18 @@ Tài liệu hướng dẫn sử dụng chính thức của phần mềm **PKG Ch
 3. **Yêu cầu hệ thống:**
    - Hệ điều hành: Windows 10 hoặc Windows 11 (64-bit).
    - **Không cần cài đặt .NET Framework hay .NET Runtime** (file `.exe` đã được đóng gói độc lập - Self-contained single executable).
-   - Cổng USB sẵn có và Driver cáp chuyển đổi USB-to-UART (CP210x, CH340, FTDI).
+   - Cổng USB sẵn có trên máy tính.
 
 ---
 
 ## 2. Kết nối trạm sạc với máy tính
 
-1. Cắm cáp USB-to-UART từ máy tính vào cổng Debug UART trên bo điều khiển trạm sạc PKG:
-   - Chân **TX** của cáp nối vào chân **RX** của bo sạc.
-   - Chân **RX** của cáp nối vào chân **TX** của bo sạc.
-   - Chân **GND** nối chung đất (GND).
+1. Cắm trực tiếp cáp USB từ máy tính vào cổng USB trên bo điều khiển trạm sạc PKG:
+   - Bo mạch điều khiển sử dụng chuẩn giao tiếp **USB CDC (Virtual COM Port)** cắm là nhận (*Plug & Play*).
+   - Windows sẽ tự động nhận diện thành một cổng COM ảo, **không cần dùng cáp chuyển đổi USB-to-UART và không cần đấu nối chân TX, RX, GND**.
 2. Khởi chạy ứng dụng `ChargerAppPC.exe`.
 3. Tại góc trên bên phải màn hình:
-   - Chọn cổng **COM** tương ứng từ danh sách (nếu không thấy, bấm nút **Refresh** 🔄).
+   - Chọn cổng **COM** tương ứng của bo sạc từ danh sách (nếu không thấy, bấm nút **Refresh** 🔄).
    - Bấm nút **Connect**.
 4. **Các tiến trình tự động diễn ra khi kết nối:**
    - Ứng dụng tự động gửi lệnh đánh thức luồng Debug Stream (`ENTER`).
@@ -163,9 +162,9 @@ Bấm nút **"Live Monitor & SCADA"** trên thanh Menu để mở giao diện tr
 
 | Vấn đề | Nguyên nhân khả dĩ | Hướng dẫn khắc phục |
 |:---|:---|:---|
-| **Không thấy cổng COM trong danh sách** | Chưa cắm cáp hoặc máy tính chưa cài Driver USB-to-UART. | Cắm lại cáp, kiểm tra trong *Device Manager*, cài driver CP210x hoặc CH340, sau đó bấm nút **Refresh 🔄**. |
-| **Báo lỗi "Failed to open port"** | Cổng COM đang bị một phần mềm khác chiếm dụng (như Terminal, PuTTY, v.v.). | Tắt các ứng dụng đang mở cổng COM đó rồi thử kết nối lại. |
-| **Báo lỗi "Timeout waiting for MCU response"** | 1. Đấu sai chân TX/RX.<br>2. Bo MCU chưa cấp nguồn.<br>3. Sai tốc độ truyền baudrate. | 1. Đảo chéo chân TX và RX giữa cáp và mạch.<br>2. Kiểm tra nguồn cấp cho vi điều khiển.<br>3. Đảm bảo tốc độ truyền chuẩn là **115200 bps**. |
+| **Không thấy cổng COM trong danh sách** | Cáp USB chưa cắm chắc hoặc máy tính chưa nhận thiết bị. | Cắm lại cáp USB, kiểm tra trong *Device Manager (Ports COM & LPT)*, sau đó bấm nút **Refresh 🔄**. |
+| **Báo lỗi "Failed to open port"** | Cổng COM đang bị một phần mềm khác chiếm dụng (như Serial Terminal, PuTTY, v.v.). | Tắt các ứng dụng đang mở cổng COM đó rồi thử kết nối lại. |
+| **Báo lỗi "Timeout waiting for MCU response"** | 1. Cáp USB chỉ là cáp sạc nguồn (không truyền data).<br>2. Bo MCU chưa được cấp nguồn.<br>3. Sai tốc độ baudrate. | 1. Đổi sang cáp USB truyền dữ liệu (Data Cable).<br>2. Kiểm tra nguồn cấp cho bo vi điều khiển.<br>3. Đảm bảo tốc độ truyền chuẩn là **115200 bps**. |
 | **Nhiệt độ Jack nhảy cao bất thường** | Cảm biến NTC jack sạc tiếp xúc kém hoặc đứt dây. | Kiểm tra dây tín hiệu cảm biến nhiệt độ jack cắm về bo MCU. |
 | **App bị đơ hoặc Windows báo "Not Responding"** | Phiên bản app cũ bị quá tải hàng đợi hiển thị khi nhận stream tốc độ cao. | Cập nhật lên phiên bản **v1.0.8** hoặc **v1.0.9** trở lên (đã được tối ưu kiến trúc đệm 15 FPS chống nghẽn hoàn toàn). |
 
